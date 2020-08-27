@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import 'widgets/calcButton.dart';
+
 void main() {
   runApp(MyApp());
 }
@@ -24,60 +26,52 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  List<String> _buttonChars = [
+    ' ',
+    ' ',
+    ' ',
+    '+',
+    '1',
+    '2',
+    '3',
+    '-',
+    '4',
+    '5',
+    '6',
+    '×',
+    '7',
+    '8',
+    '9',
+    '÷',
+    'C',
+    '0',
+    '.',
+    '=',
+  ];
+
+  isArithmeticOperator(String input) {
+    if (input == '+' ||
+        input == '-' ||
+        input == '×' ||
+        input == '÷' ||
+        input == '=' ||
+        input == 'C') {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   String _result = '';
+
   _changeResultView(String button) {
     setState(() {
-      switch (button) {
-        case '1':
-          _result += button;
-          break;
-        case '2':
-          _result += button;
-          break;
-        case '3':
-          _result += button;
-          break;
-        case '4':
-          _result += button;
-          break;
-        case '5':
-          _result += button;
-          break;
-        case '6':
-          _result += button;
-          break;
-        case '7':
-          _result += button;
-          break;
-        case '8':
-          _result += button;
-          break;
-        case '9':
-          _result += button;
-          break;
-        case '0':
-          _result += button;
-          break;
-        case 'C':
-          _result = '';
-          break;
-        case '+':
-          _result += ' $button ';
-          break;
-        case '-':
-          _result += ' $button ';
-          break;
-        case '*':
-          _result += ' $button ';
-          break;
-        case '÷':
-          _result += ' $button ';
-          break;
-        case '÷':
-          _result += ' $button ';
-          break;
-        case '=':
-          _result = _calculateResult(_result);
+      if (!isArithmeticOperator(button)) {
+        _result += button;
+      } else if (button == 'C') {
+        _result = '';
+      } else {
+        _result += ' $button ';
       }
     });
   }
@@ -95,196 +89,79 @@ class _MyHomePageState extends State<MyHomePage> {
       case '-':
         finalResult = firstNum - secondNum;
         break;
-      case '*':
+      case '×':
         finalResult = firstNum * secondNum;
         break;
       case '÷':
         finalResult = firstNum / secondNum;
         break;
     }
-    return finalResult.toString();
+    setState(() {
+      _result = finalResult.toString();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xfff2f3ae),
       body: Container(
         child: Column(
           children: <Widget>[
-            Container(
-              child: SizedBox(
-                width: 200,
-                child: Text(
-                  _result,
-                  style: TextStyle(fontSize: 50),
+            Expanded(
+              flex: 1,
+              child: Container(
+                decoration: BoxDecoration(
+                  color: Color(0xffedd382),
+                  border: Border.all(color: Color(0xffedd382)),
+                  borderRadius: BorderRadius.only(
+                    bottomLeft: Radius.circular(20),
+                    bottomRight: Radius.circular(20),
+                  ),
+                ),
+                width: double.infinity,
+                child: Container(
+                  alignment: Alignment.centerRight,
+                  padding: EdgeInsets.all(20),
+                  child: Text(
+                    _result,
+                    style: TextStyle(
+                      fontSize: 50,
+                      color: Color(0xffd3894b),
+                    ),
+                    textAlign: TextAlign.right,
+                  ),
                 ),
               ),
             ),
-            Container(
+            Expanded(
+              flex: 2,
               child: Container(
-                child: Column(
-                  children: <Widget>[
-                    Row(
-                      children: <Widget>[
-                        FlatButton(
-                          onPressed: () {
-                            _changeResultView('1');
-                          },
-                          child: Text(
-                            '1',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            _changeResultView('2');
-                          },
-                          child: Text(
-                            '2',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            _changeResultView('3');
-                          },
-                          child: Text(
-                            '3',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            _changeResultView('+');
-                          },
-                          child: Text(
-                            '+',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        FlatButton(
-                          onPressed: () {
-                            _changeResultView('4');
-                          },
-                          child: Text(
-                            '4',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            _changeResultView('5');
-                          },
-                          child: Text(
-                            '5',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            _changeResultView('6');
-                          },
-                          child: Text(
-                            '6',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            _changeResultView('-');
-                          },
-                          child: Text(
-                            '-',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        FlatButton(
-                          onPressed: () {
-                            _changeResultView('7');
-                          },
-                          child: Text(
-                            '7',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            _changeResultView('8');
-                          },
-                          child: Text(
-                            '8',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            _changeResultView('9');
-                          },
-                          child: Text(
-                            '9',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            _changeResultView('÷');
-                          },
-                          child: Text(
-                            '÷',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        )
-                      ],
-                    ),
-                    Row(
-                      children: <Widget>[
-                        FlatButton(
-                          onPressed: () {
-                            _changeResultView('C');
-                          },
-                          child: Text(
-                            'С',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            _changeResultView('0');
-                          },
-                          child: Text(
-                            '0',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            _changeResultView('=');
-                          },
-                          child: Text(
-                            '=',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        ),
-                        FlatButton(
-                          onPressed: () {
-                            _changeResultView('*');
-                          },
-                          child: Text(
-                            '*',
-                            style: TextStyle(fontSize: 40),
-                          ),
-                        )
-                      ],
-                    )
-                  ],
+                padding: EdgeInsets.all(35),
+                child: GridView.builder(
+                  itemCount: _buttonChars.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 4,
+                    mainAxisSpacing: 27,
+                    crossAxisSpacing: 23,
+                  ),
+                  itemBuilder: (BuildContext context, int index) {
+                    if (_buttonChars[index] == '=') {
+                      return CalcButton(
+                        _buttonChars[index],
+                        Color(0xfffc9e4f),
+                        Colors.white,
+                        () => _calculateResult(_result),
+                      );
+                    } else {
+                      return CalcButton(
+                        _buttonChars[index],
+                        Color(0xfffc9e4f),
+                        Colors.white,
+                        () => _changeResultView(_buttonChars[index]),
+                      );
+                    }
+                  },
                 ),
               ),
             ),
