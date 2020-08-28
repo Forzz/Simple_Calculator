@@ -27,7 +27,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<String> _buttonChars = [
-    ' ',
+    '←',
     ' ',
     ' ',
     '+',
@@ -46,50 +46,68 @@ class _MyHomePageState extends State<MyHomePage> {
     'C',
     '0',
     '.',
-    '=',
+    '='
   ];
 
-  bool isArithmeticOperator(String input) {
-    List<String> operators = ['+', '-', 'x', '÷', '=', 'C'];
+  bool isOperator(String input) {
+    List<String> operators = ['+', '-', '×', '÷', '=', 'C'];
     return operators.contains(input);
   }
 
   String _result = '';
 
   _changeResultView(String button) {
+    List<String> operators = ['+', '-', '×', '÷'];
     setState(() {
-      if (!isArithmeticOperator(button)) {
+      if (!isOperator(button)) {
         _result += button;
       } else if (button == 'C') {
         _result = '';
-      } else {
+      } else if (!_result.endsWith('${operators[0]} ') &&
+          !_result.endsWith('${operators[1]} ') &&
+          !_result.endsWith('${operators[2]} ') &&
+          !_result.endsWith('${operators[3]} ')) {
         _result += ' $button ';
       }
     });
   }
 
-  String _calculateResult(String result) {
+  _calculateResult(String result) {
+    if (result.split('').last != ' ') {
     List<String> temp;
-    double finalResult = 0;
     temp = result.split(' ');
-    double firstNum = double.parse(temp[0]);
-    double secondNum = double.parse(temp[2]);
-    switch (temp[1]) {
-      case '+':
-        finalResult = firstNum + secondNum;
-        break;
-      case '-':
-        finalResult = firstNum - secondNum;
-        break;
-      case '×':
-        finalResult = firstNum * secondNum;
-        break;
-      case '÷':
-        finalResult = firstNum / secondNum;
-        break;
+      double finalResult = double.parse(temp[0]);
+      for (int i = 1; i < temp.length; i += 2) {
+        switch (temp[i]) {
+          case '+':
+            finalResult += double.parse(temp[i + 1]);
+            break;
+          case '-':
+            finalResult -= double.parse(temp[i + 1]);
+            break;
+          case '×':
+            finalResult *= double.parse(temp[i + 1]);
+            break;
+          case '÷':
+            finalResult /= double.parse(temp[i + 1]);
+            break;
+        }
+      }
+      setState(() {
+        _result = finalResult.toString();
+      });
     }
+  }
+
+  _deleteLastChar(String result) {
     setState(() {
-      _result = finalResult.toString();
+      if (_result.isNotEmpty) {
+        if (_result.endsWith(' ')) {
+          _result = _result.substring(0, _result.length - 3);
+        } else {
+          _result = _result.substring(0, _result.length - 1);
+        }
+      }
     });
   }
 
@@ -118,7 +136,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: Text(
                     _result,
                     style: TextStyle(
-                      fontSize: 50,
+                      fontSize: 64,
                       color: Color(0xffd3894b),
                     ),
                     textAlign: TextAlign.right,
@@ -144,6 +162,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         Color(0xfffc9e4f),
                         Colors.white,
                         () => _calculateResult(_result),
+                      );
+                    } else if (_buttonChars[index] == '←') {
+                      return CalcButton(
+                        _buttonChars[index],
+                        Color(0xfffc9e4f),
+                        Colors.white,
+                        () => _deleteLastChar(_buttonChars[index]),
                       );
                     } else {
                       return CalcButton(
