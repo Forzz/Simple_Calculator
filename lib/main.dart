@@ -49,17 +49,9 @@ class _MyHomePageState extends State<MyHomePage> {
     '=',
   ];
 
-  isArithmeticOperator(String input) {
-    if (input == '+' ||
-        input == '-' ||
-        input == '×' ||
-        input == '÷' ||
-        input == '=' ||
-        input == 'C') {
-      return true;
-    } else {
-      return false;
-    }
+  bool isArithmeticOperator(String input) {
+    List<String> operators = ['+', '-', 'x', '÷', '=', 'C'];
+    return operators.contains(input);
   }
 
   String _result = '';
