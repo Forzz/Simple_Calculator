@@ -74,8 +74,8 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _calculateResult(String result) {
     if (result.split('').last != ' ') {
-    List<String> temp;
-    temp = result.split(' ');
+      List<String> temp;
+      temp = result.split(' ');
       double finalResult = double.parse(temp[0]);
       for (int i = 1; i < temp.length; i += 2) {
         switch (temp[i]) {
@@ -130,16 +130,19 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ),
                 width: double.infinity,
-                child: Container(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
                   alignment: Alignment.centerRight,
-                  padding: EdgeInsets.all(20),
-                  child: Text(
-                    _result,
-                    style: TextStyle(
-                      fontSize: 64,
-                      color: Color(0xffd3894b),
+                  child: Container(
+                    padding: EdgeInsets.all(20),
+                    child: Text(
+                      _result,
+                      style: TextStyle(
+                        fontSize: 64,
+                        color: Color(0xffd3894b),
+                      ),
+                      textAlign: TextAlign.right,
                     ),
-                    textAlign: TextAlign.right,
                   ),
                 ),
               ),
