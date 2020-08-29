@@ -50,23 +50,29 @@ class _MyHomePageState extends State<MyHomePage> {
   ];
 
   bool isOperator(String input) {
-    List<String> operators = ['+', '-', '×', '÷', '=', 'C'];
+    List<String> operators = ['+', '-', '×', '÷', '='];
     return operators.contains(input);
   }
 
+  bool isInputLimit(String result) {
+    bool isLimit = false;
+    String tempRes = result;
+    for (int i = 0; i < tempRes.split(' ').length; i += 2) {
+      if (tempRes.split(' ')[i].length >= 15) isLimit = true;
+    }
+    return isLimit;
+  }
+
   String _result = '';
+  String tempNumber = '';
 
   _changeResultView(String button) {
-    List<String> operators = ['+', '-', '×', '÷'];
+    List<String> arithOp = ['+', '-', '×', '÷'];
     setState(() {
-      if (!isOperator(button)) {
+      if (!isInputLimit(_result) && !isOperator(button)) {
         _result += button;
-      } else if (button == 'C') {
-        _result = '';
-      } else if (!_result.endsWith('${operators[0]} ') &&
-          !_result.endsWith('${operators[1]} ') &&
-          !_result.endsWith('${operators[2]} ') &&
-          !_result.endsWith('${operators[3]} ')) {
+      } else if (isOperator(button) &&
+          !arithOp.contains(_result.substring(_result.length - 2, _result.length - 1))) {
         _result += ' $button ';
       }
     });
@@ -111,10 +117,16 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  _cleanAll() {
+    setState(() {
+      _result = '';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xfff2f3ae),
+      backgroundColor: Color(0xff9dd9d2),
       body: Container(
         child: Column(
           children: <Widget>[
@@ -122,8 +134,8 @@ class _MyHomePageState extends State<MyHomePage> {
               flex: 1,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Color(0xffedd382),
-                  border: Border.all(color: Color(0xffedd382)),
+                  color: Color(0xff2ca6a4),
+                  border: Border.all(color: Color(0xff2ca6a4)),
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20),
@@ -139,7 +151,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       _result,
                       style: TextStyle(
                         fontSize: 64,
-                        color: Color(0xffd3894b),
+                        color: Colors.white,
                       ),
                       textAlign: TextAlign.right,
                     ),
@@ -162,21 +174,28 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (_buttonChars[index] == '=') {
                       return CalcButton(
                         _buttonChars[index],
-                        Color(0xfffc9e4f),
+                        Color(0xff2ca6a4),
                         Colors.white,
                         () => _calculateResult(_result),
                       );
                     } else if (_buttonChars[index] == '←') {
                       return CalcButton(
                         _buttonChars[index],
-                        Color(0xfffc9e4f),
+                        Color(0xff2ca6a4),
                         Colors.white,
                         () => _deleteLastChar(_buttonChars[index]),
+                      );
+                    } else if (_buttonChars[index] == 'C') {
+                      return CalcButton(
+                        _buttonChars[index],
+                        Color(0xff2ca6a4),
+                        Colors.white,
+                        () => _cleanAll(),
                       );
                     } else {
                       return CalcButton(
                         _buttonChars[index],
-                        Color(0xfffc9e4f),
+                        Color(0xff2ca6a4),
                         Colors.white,
                         () => _changeResultView(_buttonChars[index]),
                       );
