@@ -139,6 +139,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int _resultWindowColor = 0xff2ca6a4;
   int _backgroundColor = 0xff9dd9d2;
+  var _themeIcon = Icons.brightness_3;
 
   bool _isDark() {
     return _backgroundColor == 0xff9dd9d2 ? true : false;
@@ -149,9 +150,11 @@ class _MyHomePageState extends State<MyHomePage> {
       if (_isDark()) {
         _resultWindowColor = 0xff114140;
         _backgroundColor = 0xff225852;
+        _themeIcon = Icons.wb_sunny;
       } else {
         _resultWindowColor = 0xff2ca6a4;
         _backgroundColor = 0xff9dd9d2;
+        _themeIcon = Icons.brightness_3;
       }
     });
   }
@@ -180,7 +183,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
                     IconButton(
-                      icon: Icon(Icons.ac_unit),
+                      icon: Icon(_themeIcon),
                       padding: EdgeInsets.only(top: 30, right: 15),
                       color: Colors.white,
                       onPressed: _changeInterfaceColors,
