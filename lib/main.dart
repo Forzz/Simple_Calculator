@@ -54,25 +54,26 @@ class _MyHomePageState extends State<MyHomePage> {
     return operators.contains(input);
   }
 
-  bool isInputLimit(String result) {
-    bool isLimit = false;
-    String tempRes = result;
-    for (int i = 0; i < tempRes.split(' ').length; i += 2) {
-      if (tempRes.split(' ')[i].length >= 15) isLimit = true;
-    }
-    return isLimit;
+  bool isInputLimit(String number) {
+    return number.length < 15 ? true : false;
   }
 
   String _result = '';
-  String tempNumber = '';
+  String _tempNumber = '';
+  List<String> allNumbers = List<String>();
 
   _changeResultView(String button) {
     List<String> arithOp = ['+', '-', '×', '÷'];
     setState(() {
-      if (!isInputLimit(_result) && !isOperator(button)) {
+      if (isInputLimit(_tempNumber) && !isOperator(button)) {
+        _tempNumber += button;
         _result += button;
-      } else if (isOperator(button) &&
-          !arithOp.contains(_result.substring(_result.length - 2, _result.length - 1))) {
+      } else if (_result.isNotEmpty &&
+          isOperator(button) &&
+          !arithOp.contains(
+              _result.substring(_result.length - 2, _result.length - 1))) {
+        allNumbers.add(_tempNumber);
+        _tempNumber = '';
         _result += ' $button ';
       }
     });
@@ -98,6 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
             finalResult /= double.parse(temp[i + 1]);
             break;
         }
+        _tempNumber = _result;
       }
       setState(() {
         _result = finalResult.toString();
@@ -110,8 +112,10 @@ class _MyHomePageState extends State<MyHomePage> {
       if (_result.isNotEmpty) {
         if (_result.endsWith(' ')) {
           _result = _result.substring(0, _result.length - 3);
+          _tempNumber = allNumbers.removeLast();
         } else {
           _result = _result.substring(0, _result.length - 1);
+          _tempNumber = _tempNumber.substring(0, _tempNumber.length - 1);
         }
       }
     });
@@ -120,6 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
   _cleanAll() {
     setState(() {
       _result = '';
+      _tempNumber = '';
     });
   }
 
