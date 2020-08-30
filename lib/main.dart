@@ -137,10 +137,29 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  int _resultWindowColor = 0xff2ca6a4;
+  int _backgroundColor = 0xff9dd9d2;
+
+  bool _isDark() {
+    return _backgroundColor == 0xff9dd9d2 ? true : false;
+  }
+
+  _changeInterfaceColors() {
+    setState(() {
+      if (_isDark()) {
+        _resultWindowColor = 0xff114140;
+        _backgroundColor = 0xff225852;
+      } else {
+        _resultWindowColor = 0xff2ca6a4;
+        _backgroundColor = 0xff9dd9d2;
+      }
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xff9dd9d2),
+      backgroundColor: Color(_backgroundColor),
       body: Container(
         child: Column(
           children: <Widget>[
@@ -148,29 +167,41 @@ class _MyHomePageState extends State<MyHomePage> {
               flex: 1,
               child: Container(
                 decoration: BoxDecoration(
-                  color: Color(0xff2ca6a4),
-                  border: Border.all(color: Color(0xff2ca6a4)),
+                  color: Color(_resultWindowColor),
+                  border: Border.all(color: Color(_resultWindowColor)),
                   borderRadius: BorderRadius.only(
                     bottomLeft: Radius.circular(20),
                     bottomRight: Radius.circular(20),
                   ),
                 ),
                 width: double.infinity,
-                child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  alignment: Alignment.centerRight,
-                  child: Container(
-                    padding: EdgeInsets.all(20),
-                    child: Text(
-                      _result,
-                      style: TextStyle(
-                        fontSize: 64,
-                        color: Colors.white,
-                        fontFamily: 'Lato',
-                      ),
-                      textAlign: TextAlign.right,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  crossAxisAlignment: CrossAxisAlignment.end,
+                  children: <Widget>[
+                    IconButton(
+                      icon: Icon(Icons.ac_unit),
+                      padding: EdgeInsets.only(top: 30, right: 15),
+                      color: Colors.white,
+                      onPressed: _changeInterfaceColors,
                     ),
-                  ),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerRight,
+                      child: Container(
+                        padding: EdgeInsets.all(20),
+                        child: Text(
+                          _result,
+                          style: TextStyle(
+                            fontSize: 64,
+                            color: Colors.white,
+                            fontFamily: 'Lato',
+                          ),
+                          textAlign: TextAlign.right,
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -189,7 +220,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     if (_buttonChars[index] == '=') {
                       return CalcButton(
                         _buttonChars[index],
-                        Color(0xff2ca6a4),
+                        Color(_resultWindowColor),
                         Colors.white,
                         'Lato',
                         null,
@@ -198,7 +229,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     } else if (_buttonChars[index] == '←') {
                       return CalcButton(
                         _buttonChars[index],
-                        Color(0xff2ca6a4),
+                        Color(_resultWindowColor),
                         Colors.white,
                         'Lato',
                         Icons.arrow_back,
@@ -207,7 +238,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     } else if (_buttonChars[index] == 'C') {
                       return CalcButton(
                         _buttonChars[index],
-                        Color(0xff2ca6a4),
+                        Color(_resultWindowColor),
                         Colors.white,
                         'Lato',
                         null,
@@ -216,7 +247,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     } else if (_buttonChars[index] == '.') {
                       return CalcButton(
                         _buttonChars[index],
-                        Color(0xff2ca6a4),
+                        Color(_resultWindowColor),
                         Colors.white,
                         'Lato',
                         null,
@@ -225,7 +256,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     } else {
                       return CalcButton(
                         _buttonChars[index],
-                        Color(0xff2ca6a4),
+                        Color(_resultWindowColor),
                         Colors.white,
                         'Lato',
                         null,
