@@ -121,6 +121,15 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  _addDot(button) {
+    if (!_tempNumber.contains(button)) {
+      setState(() {
+        _tempNumber += button;
+        _result += button;
+      });
+    }
+  }
+
   _cleanAll() {
     setState(() {
       _result = '';
@@ -196,6 +205,13 @@ class _MyHomePageState extends State<MyHomePage> {
                         Color(0xff2ca6a4),
                         Colors.white,
                         () => _cleanAll(),
+                      );
+                    } else if (_buttonChars[index] == '.') {
+                      return CalcButton(
+                        _buttonChars[index],
+                        Color(0xff2ca6a4),
+                        Colors.white,
+                        () => _addDot(_buttonChars[index]),
                       );
                     } else {
                       return CalcButton(
