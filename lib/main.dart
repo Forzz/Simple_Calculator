@@ -27,11 +27,26 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<String> _buttonChars = [
-    'C', ' ', ' ', '←',
-    '1', '2', '3', '+',
-    '4', '5', '6', '-',
-    '7', '8', '9', '×',
-    '.', '0', '=', '÷'
+    'C',
+    ' ',
+    ' ',
+    '←',
+    '1',
+    '2',
+    '3',
+    '+',
+    '4',
+    '5',
+    '6',
+    '-',
+    '7',
+    '8',
+    '9',
+    '×',
+    '.',
+    '0',
+    '=',
+    '÷'
   ];
 
   bool isOperator(String input) {
