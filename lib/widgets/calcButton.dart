@@ -4,12 +4,16 @@ class CalcButton extends StatelessWidget {
   final String input;
   final textColor;
   final color;
+  final fontFamily;
+  final icon;
   final buttonTapped;
 
   const CalcButton(
     this.input,
     this.color,
     this.textColor,
+    this.fontFamily,
+    this.icon,
     this.buttonTapped,
   );
 
@@ -22,10 +26,19 @@ class CalcButton extends StatelessWidget {
         child: Container(
           alignment: Alignment.center,
           color: color,
-          child: Text(
-            input,
-            style: TextStyle(fontSize: 24, color: textColor),
-          ),
+          child: this.icon == null
+              ? Text(
+                  input,
+                  style: TextStyle(
+                    fontSize: 30,
+                    color: textColor,
+                    fontFamily: fontFamily,
+                  ),
+                )
+              : Icon(
+                  icon,
+                  color: Colors.white,
+                ),
         ),
       ),
     );

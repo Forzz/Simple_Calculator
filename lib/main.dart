@@ -166,6 +166,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       style: TextStyle(
                         fontSize: 64,
                         color: Colors.white,
+                        fontFamily: 'Lato',
                       ),
                       textAlign: TextAlign.right,
                     ),
@@ -190,6 +191,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         _buttonChars[index],
                         Color(0xff2ca6a4),
                         Colors.white,
+                        'Lato',
+                        null,
                         () => _calculateResult(_result),
                       );
                     } else if (_buttonChars[index] == '←') {
@@ -197,6 +200,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         _buttonChars[index],
                         Color(0xff2ca6a4),
                         Colors.white,
+                        'Lato',
+                        Icons.arrow_back,
                         () => _deleteLastChar(_buttonChars[index]),
                       );
                     } else if (_buttonChars[index] == 'C') {
@@ -204,6 +209,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         _buttonChars[index],
                         Color(0xff2ca6a4),
                         Colors.white,
+                        'Lato',
+                        null,
                         () => _cleanAll(),
                       );
                     } else if (_buttonChars[index] == '.') {
@@ -211,6 +218,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         _buttonChars[index],
                         Color(0xff2ca6a4),
                         Colors.white,
+                        'Lato',
+                        null,
                         () => _addDot(_buttonChars[index]),
                       );
                     } else {
@@ -218,6 +227,8 @@ class _MyHomePageState extends State<MyHomePage> {
                         _buttonChars[index],
                         Color(0xff2ca6a4),
                         Colors.white,
+                        'Lato',
+                        null,
                         () => _changeResultView(_buttonChars[index]),
                       );
                     }
