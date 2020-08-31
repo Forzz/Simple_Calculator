@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'widgets/calcButton.dart';
+import 'widgets/calc_button.dart';
+import 'icon_code/custom_icons_icons.dart';
 
 void main() {
   runApp(MyApp());
@@ -10,6 +11,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
         primarySwatch: Colors.blue,
@@ -124,8 +126,13 @@ class _MyHomePageState extends State<MyHomePage> {
   _addDot(button) {
     if (!_tempNumber.contains(button)) {
       setState(() {
+        if (_tempNumber.isNotEmpty) {
         _tempNumber += button;
         _result += button;
+        } else if (_tempNumber.isEmpty) {
+          _tempNumber += '0$button';
+          _result += '0$button';
+        }
       });
     }
   }
@@ -139,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int _resultWindowColor = 0xff2ca6a4;
   int _backgroundColor = 0xff9dd9d2;
-  var _themeIcon = Icons.brightness_3;
+  var _themeIcon = CustomIcons.moon;
 
   bool _isDark() {
     return _backgroundColor == 0xff9dd9d2 ? true : false;
@@ -150,11 +157,11 @@ class _MyHomePageState extends State<MyHomePage> {
       if (_isDark()) {
         _resultWindowColor = 0xff114140;
         _backgroundColor = 0xff225852;
-        _themeIcon = Icons.wb_sunny;
+        _themeIcon = CustomIcons.lightbulb;
       } else {
         _resultWindowColor = 0xff2ca6a4;
         _backgroundColor = 0xff9dd9d2;
-        _themeIcon = Icons.brightness_3;
+        _themeIcon = CustomIcons.lamp;
       }
     });
   }
