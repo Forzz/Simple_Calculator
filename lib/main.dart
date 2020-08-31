@@ -83,28 +83,43 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _calculateResult(String result) {
     if (result.split('').last != ' ') {
-      List<String> temp;
-      temp = result.split(' ');
-      double finalResult = double.parse(temp[0]);
-      for (int i = 1; i < temp.length; i += 2) {
-        switch (temp[i]) {
-          case '+':
-            finalResult += double.parse(temp[i + 1]);
-            break;
-          case '-':
-            finalResult -= double.parse(temp[i + 1]);
-            break;
-          case '×':
-            finalResult *= double.parse(temp[i + 1]);
-            break;
-          case '÷':
-            finalResult /= double.parse(temp[i + 1]);
-            break;
+      List<String> tempList = result.split(' ');
+      for (int i = 0; i < tempList.length; i++) {
+        if (tempList[i] == '÷') {
+          tempList[i] =
+              (double.parse(tempList[i - 1]) / double.parse(tempList[i + 1]))
+                  .toString();
+          tempList.removeAt(i + 1);
+          tempList.removeAt(i - 1);
+          i = 0;
+        } else if (tempList[i] == '×') {
+          tempList[i] =
+              (double.parse(tempList[i - 1]) * double.parse(tempList[i + 1]))
+                  .toString();
+          tempList.removeAt(i + 1);
+          tempList.removeAt(i - 1);
+          i = 0;
         }
-        _tempNumber = _result;
+      }
+      for (int i = 0; i < tempList.length; i++) {
+        if (tempList[i] == '+') {
+          tempList[i] =
+              (double.parse(tempList[i - 1]) + double.parse(tempList[i + 1]))
+                  .toString();
+          tempList.removeAt(i + 1);
+          tempList.removeAt(i - 1);
+          i = 0;
+        } else if (tempList[i] == '-') {
+          tempList[i] =
+              (double.parse(tempList[i - 1]) - double.parse(tempList[i + 1]))
+                  .toString();
+          tempList.removeAt(i + 1);
+          tempList.removeAt(i - 1);
+          i = 0;
+        }
       }
       setState(() {
-        _result = finalResult.toString();
+        _result = tempList[0];
       });
     }
   }
@@ -127,8 +142,8 @@ class _MyHomePageState extends State<MyHomePage> {
     if (!_tempNumber.contains(button)) {
       setState(() {
         if (_tempNumber.isNotEmpty) {
-        _tempNumber += button;
-        _result += button;
+          _tempNumber += button;
+          _result += button;
         } else if (_tempNumber.isEmpty) {
           _tempNumber += '0$button';
           _result += '0$button';
@@ -146,7 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int _resultWindowColor = 0xff2ca6a4;
   int _backgroundColor = 0xff9dd9d2;
-  var _themeIcon = CustomIcons.moon;
+  var _themeIcon = CustomIcons.lamp;
 
   bool _isDark() {
     return _backgroundColor == 0xff9dd9d2 ? true : false;
