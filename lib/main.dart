@@ -51,12 +51,12 @@ class _MyHomePageState extends State<MyHomePage> {
     '÷'
   ];
 
-  bool isOperator(String input) {
+  bool _isOperator(String input) {
     List<String> operators = ['+', '-', '×', '÷', '='];
     return operators.contains(input);
   }
 
-  bool isInputLimit(String number) {
+  bool _isInputLimit(String number) {
     return number.length < 15 ? true : false;
   }
 
@@ -67,11 +67,11 @@ class _MyHomePageState extends State<MyHomePage> {
   _changeResultView(String button) {
     List<String> arithOp = ['+', '-', '×', '÷'];
     setState(() {
-      if (isInputLimit(_tempNumber) && !isOperator(button)) {
+      if (_isInputLimit(_tempNumber) && !_isOperator(button)) {
         _tempNumber += button;
         _result += button;
       } else if (_result.isNotEmpty &&
-          isOperator(button) &&
+          _isOperator(button) &&
           !arithOp.contains(
               _result.substring(_result.length - 2, _result.length - 1))) {
         allNumbers.add(_tempNumber);
@@ -121,21 +121,26 @@ class _MyHomePageState extends State<MyHomePage> {
       setState(() {
         _result = tempList[0];
       });
+      _isCanDelete = false;
     }
   }
 
+  bool _isCanDelete = true;
+
   _deleteLastChar(String result) {
-    setState(() {
-      if (_result.isNotEmpty) {
-        if (_result.endsWith(' ')) {
-          _result = _result.substring(0, _result.length - 3);
-          _tempNumber = allNumbers.removeLast();
-        } else {
-          _result = _result.substring(0, _result.length - 1);
-          _tempNumber = _tempNumber.substring(0, _tempNumber.length - 1);
+    if (_isCanDelete) {
+      setState(() {
+        if (_result.isNotEmpty) {
+          if (_result.endsWith(' ')) {
+            _result = _result.substring(0, _result.length - 3);
+            _tempNumber = allNumbers.removeLast();
+          } else {
+            _result = _result.substring(0, _result.length - 1);
+            _tempNumber = _tempNumber.substring(0, _tempNumber.length - 1);
+          }
         }
-      }
-    });
+      });
+    }
   }
 
   _addDot(button) {
@@ -157,6 +162,7 @@ class _MyHomePageState extends State<MyHomePage> {
       _result = '';
       _tempNumber = '';
     });
+    _isCanDelete = true;
   }
 
   int _resultWindowColor = 0xff2ca6a4;
