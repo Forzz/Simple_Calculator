@@ -51,11 +51,6 @@ class _MyHomePageState extends State<MyHomePage> {
     '÷'
   ];
 
-  bool _isOperator(String input) {
-    List<String> operators = ['+', '-', '×', '÷', '='];
-    return operators.contains(input);
-  }
-
   bool _isInputLimit(String number) {
     return number.length < 15 ? true : false;
   }
@@ -65,25 +60,57 @@ class _MyHomePageState extends State<MyHomePage> {
   List<String> allNumbers = List<String>();
 
   _changeResultView(String button) {
-    List<String> arithOp = ['+', '-', '×', '÷'];
+    List<String> operators = ['+', '-', '×', '÷', '='];
     setState(() {
-      if (_isInputLimit(_tempNumber) && !_isOperator(button)) {
+      if (!operators.contains(button) && _isInputLimit(_tempNumber)) {
         _tempNumber += button;
         _result += button;
-      } else if (_result.isNotEmpty &&
-          _isOperator(button) &&
-          !arithOp.contains(
-              _result.substring(_result.length - 2, _result.length - 1))) {
-        allNumbers.add(_tempNumber);
-        _tempNumber = '';
-        _result += ' $button ';
+      } else if (operators.contains(button)) {
+        if (button == '-') {
+          if (_tempNumber.isEmpty) {
+            _tempNumber += '$button';
+            _result += '($button';
+          } else if (_tempNumber.isNotEmpty) {
+            if (double.parse(_tempNumber) < 0) {
+              _result += ') $button ';
+            } else if (double.parse(_tempNumber) > 0) {
+              _result += ' $button ';
+            }
+            allNumbers.add(_tempNumber);
+            _tempNumber = '';
+          }
+        } else if (button == '+' || button == '÷' || button == '×') {
+          if (_tempNumber.length > 1 && _tempNumber.isNotEmpty) {
+            if (double.parse(_tempNumber) < 0) {
+              _result += ') $button ';
+            } else if (double.parse(_tempNumber) > 0) {
+              _result += ' $button ';
+            }
+            allNumbers.add(_tempNumber);
+            _tempNumber = '';
+          } else {
+            if (!_result.endsWith('+ ') ||
+                !_result.endsWith('- ') ||
+                !_result.endsWith('× ') ||
+                !_result.endsWith('÷ ')) {
+              if (double.parse(_tempNumber) < 0) {
+                _result += ') $button ';
+              } else if (double.parse(_tempNumber) > 0) {
+                _result += ' $button ';
+              }
+              allNumbers.add(_tempNumber);
+              _tempNumber = '';
+            }
+          }
+        }
       }
     });
   }
 
   _calculateResult(String result) {
     if (result.split('').last != ' ') {
-      List<String> tempList = result.split(' ');
+      List<String> tempList =
+          result.replaceAll('(', '').replaceAll(')', '').split(' ');
       for (int i = 0; i < tempList.length; i++) {
         if (tempList[i] == '÷') {
           tempList[i] =
@@ -118,6 +145,8 @@ class _MyHomePageState extends State<MyHomePage> {
           i = 0;
         }
       }
+      if (tempList[0].endsWith('.0'))
+        tempList[0] = tempList[0].substring(0, tempList[0].length - 2);
       setState(() {
         _result = tempList[0];
       });
