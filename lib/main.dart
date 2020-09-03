@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'dart:math' as Math;
 
 import 'widgets/calc_button.dart';
 import 'icon_code/custom_icons_icons.dart';
@@ -30,7 +31,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   List<String> _buttonChars = [
     'C',
-    ' ',
+    '√',
     ' ',
     '←',
     '1',
@@ -62,14 +63,16 @@ class _MyHomePageState extends State<MyHomePage> {
   _changeResultView(String button) {
     List<String> operators = ['+', '-', '×', '÷'];
     setState(() {
-      if (!operators.contains(button)) {
+      if (!operators.contains(button) && _isInputLimit(_tempNumber)) {
         _result += button;
         _tempNumber += button;
       } else if (operators.contains(button)) {
         if (button == '-' && _tempNumber.isEmpty) {
           _result += '($button';
-          _tempNumber +=button;
-        } else if (button == '-' && _tempNumber.isNotEmpty && _tempNumber != '-') {
+          _tempNumber += button;
+        } else if (button == '-' &&
+            _tempNumber.isNotEmpty &&
+            _tempNumber != '-' && !_result.endsWith('.')) {
           if (double.parse(_tempNumber) < 0) {
             _result += ') $button ';
           } else if (double.parse(_tempNumber) >= 0) {
@@ -78,7 +81,12 @@ class _MyHomePageState extends State<MyHomePage> {
           _allNumbers.add(_tempNumber);
           _tempNumber = '';
         } else if (button == '+' || button == '×' || button == '÷') {
-          if (!_result.endsWith('+ ') && !_result.endsWith('× ') && !_result.endsWith('÷ ') && _tempNumber.isNotEmpty && _tempNumber != '-') {
+          if (!_result.endsWith('+ ') &&
+              !_result.endsWith('× ') &&
+              !_result.endsWith('÷ ') &&
+              !_result.endsWith('.') &&
+              _tempNumber.isNotEmpty &&
+              _tempNumber != '-') {
             if (double.parse(_tempNumber) < 0) {
               _result += ') $button ';
             } else if (double.parse(_tempNumber) >= 0) {
@@ -139,6 +147,21 @@ class _MyHomePageState extends State<MyHomePage> {
     }
   }
 
+  _sqrtOperation() {
+      if (_result.split(' ').length == 1 &&
+          _tempNumber.isNotEmpty &&
+          _tempNumber != '-') {
+        _result = Math.sqrt(double.parse(_result)).toStringAsFixed(9);
+        setState(() {
+          if (_result.endsWith('.000000000')) {
+            _result = _result.substring(0, _result.length - 10);
+          } else {
+            _result = _result;
+          }
+        });
+      }
+  }
+
   bool _isCanDelete = true;
 
   _deleteLastChar() {
@@ -168,8 +191,8 @@ class _MyHomePageState extends State<MyHomePage> {
             _tempNumber += '0$button';
             _result += '0$button';
           } else {
-          _tempNumber += button;
-          _result += button;
+            _tempNumber += button;
+            _result += button;
           }
         } else if (_tempNumber.isEmpty) {
           _tempNumber += '0$button';
@@ -305,6 +328,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         'Lato',
                         null,
                         () => _addDot(_buttonChars[index]),
+                      );
+                    } else if (_buttonChars[index] == '√') {
+                      return CalcButton(
+                        _buttonChars[index],
+                        Color(_resultWindowColor),
+                        Colors.white,
+                        'Lato',
+                        null,
+                        () => _sqrtOperation(),
                       );
                     } else {
                       return CalcButton(
