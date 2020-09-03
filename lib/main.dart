@@ -57,50 +57,35 @@ class _MyHomePageState extends State<MyHomePage> {
 
   String _result = '';
   String _tempNumber = '';
-  List<String> allNumbers = List<String>();
+  List<String> _allNumbers = List<String>();
 
   _changeResultView(String button) {
-    List<String> operators = ['+', '-', '×', '÷', '='];
+    List<String> operators = ['+', '-', '×', '÷'];
     setState(() {
-      if (!operators.contains(button) && _isInputLimit(_tempNumber)) {
-        _tempNumber += button;
+      if (!operators.contains(button)) {
         _result += button;
+        _tempNumber += button;
       } else if (operators.contains(button)) {
-        if (button == '-') {
-          if (_tempNumber.isEmpty) {
-            _tempNumber += '$button';
-            _result += '($button';
-          } else if (_tempNumber.isNotEmpty) {
-            if (double.parse(_tempNumber) < 0) {
-              _result += ') $button ';
-            } else if (double.parse(_tempNumber) > 0) {
-              _result += ' $button ';
-            }
-            allNumbers.add(_tempNumber);
-            _tempNumber = '';
+        if (button == '-' && _tempNumber.isEmpty) {
+          _result += '($button';
+          _tempNumber +=button;
+        } else if (button == '-' && _tempNumber.isNotEmpty && _tempNumber != '-') {
+          if (double.parse(_tempNumber) < 0) {
+            _result += ') $button ';
+          } else if (double.parse(_tempNumber) >= 0) {
+            _result += ' $button ';
           }
-        } else if (button == '+' || button == '÷' || button == '×') {
-          if (_tempNumber.length > 1 && _tempNumber.isNotEmpty) {
+          _allNumbers.add(_tempNumber);
+          _tempNumber = '';
+        } else if (button == '+' || button == '×' || button == '÷') {
+          if (!_result.endsWith('+ ') && !_result.endsWith('× ') && !_result.endsWith('÷ ') && _tempNumber.isNotEmpty && _tempNumber != '-') {
             if (double.parse(_tempNumber) < 0) {
               _result += ') $button ';
-            } else if (double.parse(_tempNumber) > 0) {
+            } else if (double.parse(_tempNumber) >= 0) {
               _result += ' $button ';
             }
-            allNumbers.add(_tempNumber);
+            _allNumbers.add(_tempNumber);
             _tempNumber = '';
-          } else {
-            if (!_result.endsWith('+ ') ||
-                !_result.endsWith('- ') ||
-                !_result.endsWith('× ') ||
-                !_result.endsWith('÷ ')) {
-              if (double.parse(_tempNumber) < 0) {
-                _result += ') $button ';
-              } else if (double.parse(_tempNumber) > 0) {
-                _result += ' $button ';
-              }
-              allNumbers.add(_tempNumber);
-              _tempNumber = '';
-            }
           }
         }
       }
@@ -156,13 +141,16 @@ class _MyHomePageState extends State<MyHomePage> {
 
   bool _isCanDelete = true;
 
-  _deleteLastChar(String result) {
+  _deleteLastChar() {
     if (_isCanDelete) {
       setState(() {
         if (_result.isNotEmpty) {
           if (_result.endsWith(' ')) {
             _result = _result.substring(0, _result.length - 3);
-            _tempNumber = allNumbers.removeLast();
+            _tempNumber = _allNumbers.removeLast();
+          } else if (_result.endsWith('(-')) {
+            _result = _result.substring(0, _result.length - 2);
+            _tempNumber = '';
           } else {
             _result = _result.substring(0, _result.length - 1);
             _tempNumber = _tempNumber.substring(0, _tempNumber.length - 1);
@@ -176,8 +164,13 @@ class _MyHomePageState extends State<MyHomePage> {
     if (!_tempNumber.contains(button)) {
       setState(() {
         if (_tempNumber.isNotEmpty) {
+          if (_tempNumber == '-') {
+            _tempNumber += '0$button';
+            _result += '0$button';
+          } else {
           _tempNumber += button;
           _result += button;
+          }
         } else if (_tempNumber.isEmpty) {
           _tempNumber += '0$button';
           _result += '0$button';
@@ -293,7 +286,7 @@ class _MyHomePageState extends State<MyHomePage> {
                         Colors.white,
                         'Lato',
                         Icons.arrow_back,
-                        () => _deleteLastChar(_buttonChars[index]),
+                        () => _deleteLastChar(),
                       );
                     } else if (_buttonChars[index] == 'C') {
                       return CalcButton(
