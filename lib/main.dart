@@ -3,6 +3,7 @@ import 'dart:math' as Math;
 
 import 'widgets/calc_button.dart';
 import 'icon_code/custom_icons_icons.dart';
+import 'icon_code/custom_icons.dart';
 
 void main() {
   runApp(MyApp());
@@ -32,7 +33,7 @@ class _MyHomePageState extends State<MyHomePage> {
   List<String> _buttonChars = [
     'C',
     '√',
-    ' ',
+    'pow',
     '←',
     '1',
     '2',
@@ -98,7 +99,7 @@ class _MyHomePageState extends State<MyHomePage> {
         }
       }
     });
-  }
+  } 
 
   _calculateResult(String result) {
     if (result.split('').last != ' ') {
@@ -212,7 +213,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   int _resultWindowColor = 0xff2ca6a4;
   int _backgroundColor = 0xff9dd9d2;
-  var _themeIcon = CustomIcons.lamp;
+  var _themeIcon = Custom.lampON;
 
   bool _isDark() {
     return _backgroundColor == 0xff9dd9d2 ? true : false;
@@ -223,11 +224,11 @@ class _MyHomePageState extends State<MyHomePage> {
       if (_isDark()) {
         _resultWindowColor = 0xff114140;
         _backgroundColor = 0xff225852;
-        _themeIcon = CustomIcons.lightbulb;
+        _themeIcon = Custom.lampOFF;
       } else {
         _resultWindowColor = 0xff2ca6a4;
         _backgroundColor = 0xff9dd9d2;
-        _themeIcon = CustomIcons.lamp;
+        _themeIcon = Custom.lampON;
       }
     });
   }
@@ -337,6 +338,15 @@ class _MyHomePageState extends State<MyHomePage> {
                         'Lato',
                         null,
                         () => _sqrtOperation(),
+                      );
+                    } else if (_buttonChars[index] == 'pow') {
+                      return CalcButton(
+                        _buttonChars[index],
+                        Color(_resultWindowColor),
+                        Colors.white,
+                        'Lato',
+                        Custom.powMath,
+                        () => null,
                       );
                     } else {
                       return CalcButton(

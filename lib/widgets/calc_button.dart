@@ -37,6 +37,7 @@ class CalcButton extends StatelessWidget {
                 )
               : Icon(
                   icon,
+                  size: 30,
                   color: Colors.white,
                 ),
         ),
