@@ -284,6 +284,7 @@ class _MyHomePageState extends State<MyHomePage> {
                       fit: BoxFit.scaleDown,
                       alignment: Alignment.centerRight,
                       child: Container(
+                        alignment: Alignment.centerRight,
                         padding: EdgeInsets.all(20),
                         child: Text(
                           _result,
