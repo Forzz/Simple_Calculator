@@ -274,26 +274,32 @@ class _MyHomePageState extends State<MyHomePage> {
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: <Widget>[
-                    IconButton(
-                      icon: Icon(_themeIcon),
-                      padding: EdgeInsets.only(top: 30, right: 15),
-                      color: Colors.white,
-                      onPressed: _changeInterfaceColors,
+                    Expanded(
+                      flex: 3,
+                      child: IconButton(
+                        icon: Icon(_themeIcon),
+                        padding: EdgeInsets.only(top: 30, right: 15),
+                        color: Colors.white,
+                        onPressed: _changeInterfaceColors,
+                      ),
                     ),
-                    FittedBox(
-                      fit: BoxFit.scaleDown,
-                      alignment: Alignment.centerRight,
-                      child: Container(
+                    Expanded(
+                      flex: 9,
+                      child: FittedBox(
+                        fit: BoxFit.scaleDown,
                         alignment: Alignment.centerRight,
-                        padding: EdgeInsets.all(20),
-                        child: Text(
-                          _result,
-                          style: TextStyle(
-                            fontSize: 64,
-                            color: Colors.white,
-                            fontFamily: 'Lato',
+                        child: Container(
+                          alignment: Alignment.centerRight,
+                          padding: EdgeInsets.all(20),
+                          child: Text(
+                            _result,
+                            style: TextStyle(
+                              fontSize: 64,
+                              color: Colors.white,
+                              fontFamily: 'Lato',
+                            ),
+                            textAlign: TextAlign.right,
                           ),
-                          textAlign: TextAlign.right,
                         ),
                       ),
                     ),
